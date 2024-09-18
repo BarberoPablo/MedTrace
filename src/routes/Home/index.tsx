@@ -356,7 +356,7 @@ export default function MedicalImageEditor() {
         </div>
       </header>
 
-      <main className="flex-grow flex">
+      <main className="flex-grow flex text-gray-600 text-sm font-medium">
         <div className="w-64 bg-white shadow-sm">
           <div className="p-4">
             <div className="space-y-2 ">
@@ -386,7 +386,7 @@ export default function MedicalImageEditor() {
 
         <div className="flex-grow p-4 bg-gray-200">
           <div className="bg-white w-full h-full rounded-lg shadow-inner flex flex-col gap-2">
-            <div className="flex flex-row border-b p-4">
+            <div className="flex flex-row border-b p-4 h-20">
               <div className="border-r flex items-center space-x-2">
                 <button onClick={handleUndo} className="p-2 hover:bg-gray-100 rounded">
                   <UndoIcon className="h-5 w-5 text-gray-600" />
@@ -450,14 +450,13 @@ export default function MedicalImageEditor() {
               )}
             </div>
             <div className="flex flex-row gap-10">
-              <div>
-                <ImageReferences
-                  bodyPart="prostata"
-                  handleData={{ circle: handleAddCircle, rect: handleAddRectangle, rhombus: handleAddRectangle }}
-                  handleColor={setColor}
-                />
-              </div>
-              <FabricJSCanvas className="sample-canvas border" onReady={onReady} />
+              <FabricJSCanvas className="sample-canvas border mx-4 my-2" onReady={onReady} />
+
+              <ImageReferences
+                bodyPart="prostata"
+                handleData={{ circle: handleAddCircle, rect: handleAddRectangle, rhombus: handleAddRectangle }}
+                handleColor={setColor}
+              />
             </div>
           </div>
         </div>

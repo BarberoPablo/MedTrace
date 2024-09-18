@@ -30,22 +30,26 @@ export default function ImageReferences({
   };
 
   return (
-    <div className="flex flex-col items-center text-gray-600">
+    <div className="flex flex-col items-center">
       <span className="text-lg font-medium">Referencias Técnicas</span>
       <div className="bg-white rounded-lg">
         {referenceData && (
           <div className="flex flex-row">
             <div className="flex flex-col pr-4 border-r">
-              {Object.keys(referenceData.references.shapes).map((shape) => (
-                <button
-                  key={shape}
-                  onClick={() => (shape === "rhombus" ? handleData[shape as Shapes](fill === "full", 45) : handleData[shape as Shapes](fill === "full"))}
-                  className="flex flex-row items-center space-x-2 px-4 py-2 text-lg font-medium"
-                >
-                  {icons[shape]?.empty}
-                  <span>{referenceData.references.shapes[shape as Shapes]}</span>
-                </button>
-              ))}
+              <div className="flex flex-col space-y-2">
+                {Object.keys(referenceData.references.shapes).map((shape) => (
+                  <button
+                    key={shape}
+                    onClick={() => (shape === "rhombus" ? handleData[shape as Shapes](fill === "full", 45) : handleData[shape as Shapes](fill === "full"))}
+                    className="flex items-center space-x-2 px-4 py-2 rounded-md h-10 bg-gray-200 transition-all transform active:scale-90 hover:bg-blue-200 active:bg-blue-500"
+                    /* 
+                  className="flex flex-row items-center space-x-2 px-4 py-2 text-lg font-medium hover:bg-blue-300" */
+                  >
+                    {icons[shape]?.empty}
+                    <span>{referenceData.references.shapes[shape as Shapes]}</span>
+                  </button>
+                ))}
+              </div>
               <div className="flex justify-center mt-1 h-16">
                 <div className="flex space-x-2">
                   {Object.keys(referenceData.references.fill).map((fillKey) => (
@@ -53,7 +57,7 @@ export default function ImageReferences({
                       key={fillKey}
                       value={fillKey}
                       onClick={() => handleChangeFillType(fillKey)}
-                      className={`px-4 py-2 rounded-md text-sm font-medium ${fill === fillKey ? "bg-blue-300" : "bg-gray-200"}`}
+                      className={`px-4 py-2 rounded-md ${fill === fillKey ? "bg-blue-300" : "bg-gray-200"}`}
                     >
                       <span className="whitespace-pre-wrap">{referenceData.references.fill[fillKey]}</span>
                     </button>
@@ -74,7 +78,6 @@ export default function ImageReferences({
                     } `}
                   >
                     <Edit3 style={{ color: colorKey }} />
-
                     <span>{referenceData.references.colors[colorKey]}</span>
                   </button>
                 ))}
