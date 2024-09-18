@@ -1,7 +1,7 @@
 import { Edit3 } from "lucide-react";
 import * as React from "react";
-import { BodyPart, ReferenceData, Shapes } from "./types";
-import { icons, references } from "./utils";
+import { BodyPart, ReferenceData, Shapes } from "../../../../types";
+import { icons, references } from "../../../../utils";
 
 export default function ImageReferences({
   bodyPart,

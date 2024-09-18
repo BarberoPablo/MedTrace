@@ -6,6 +6,7 @@ import { SelectedMode } from "../../types";
 import { bodyParts } from "../../utils";
 import ImageReferences from "./components/ImageReferences";
 import SelectedModeMenu from "./components/SelectedModeMenu";
+import ActiveShapeMenu from "./components/ActiveShapeMenu";
 
 const initialColor = "#000";
 
@@ -13,7 +14,7 @@ export default function MedicalImageEditor() {
   const [openAccordions, setOpenAccordions] = useState<string[]>([]);
   const { editor, onReady } = useFabricJSEditor();
   const strokeColorInputRef = useRef<HTMLInputElement>(null);
-  /* const fillColorInputRef = useRef<HTMLInputElement>(null); */
+  const fillColorInputRef = useRef<HTMLInputElement>(null);
   const [color, setColor] = useState({
     stroke: initialColor,
     fill: "black",
@@ -25,7 +26,7 @@ export default function MedicalImageEditor() {
   const [isCanvasReady, setIsCanvasReady] = useState<boolean>(false);
   const [selectedMode, setSelectedMode] = useState<SelectedMode>("select");
   const [activeShape, setActiveShape] = useState<fabric.Object | null>(null);
-  console.log(activeShape);
+
   useEffect(() => {
     if (editor?.canvas) {
       const img = new Image();
@@ -151,9 +152,9 @@ export default function MedicalImageEditor() {
     strokeColorInputRef.current?.click();
   };
 
-  /* const handleFillColorButtonClick = () => {
+  const handleFillColorButtonClick = () => {
     fillColorInputRef.current?.click();
-  }; */
+  };
 
   const handleChangeColor = (event: React.ChangeEvent<HTMLInputElement>, prop: string) => {
     const newColor = event.target.value;
@@ -225,7 +226,7 @@ export default function MedicalImageEditor() {
     }
   };
 
-  /* const handleUpdateShape = (props: Record<string, string | number>) => {
+  const handleUpdateShape = (props: Record<string, string | number>) => {
     //The reference to the activeShape is beeing modified, not the actual value
     if (activeShape) {
       activeShape.set({
@@ -234,7 +235,7 @@ export default function MedicalImageEditor() {
       editor?.canvas.renderAll();
       saveHistory();
     }
-  }; */
+  };
 
   const handleAddText = () => {
     setSelectedMode("");
@@ -425,9 +426,22 @@ export default function MedicalImageEditor() {
                   handleStrokeColorButtonClick: handleStrokeColorButtonClick,
                   strokeInputRef: strokeColorInputRef,
                   strokeInputColor: color.stroke,
-                  handleChangeColor: handleChangeColor /* llamar con (event, "stroke") */,
+                  handleChangeColor: handleChangeColor,
                   strokeWidth: strokeWidth,
                   handleStrokeWidth: handleStrokeWidth,
+                }}
+              />
+              <ActiveShapeMenu
+                props={{
+                  activeShape: activeShape,
+                  handleUpdateShape: handleUpdateShape,
+                  handleStrokeColorButtonClick: handleStrokeColorButtonClick,
+                  handleFillColorButtonClick: handleFillColorButtonClick,
+                  strokeColorInputRef: strokeColorInputRef,
+                  strokeInputColor: color.stroke,
+                  handleChangeColor: handleChangeColor,
+                  fillColorInputRef: fillColorInputRef,
+                  fillInputColor: color.fill,
                 }}
               />
             </div>
