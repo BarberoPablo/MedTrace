@@ -42,15 +42,13 @@ export default function ImageReferences({
                     key={shape}
                     onClick={() => (shape === "rhombus" ? handleData[shape as Shapes](fill === "full", 45) : handleData[shape as Shapes](fill === "full"))}
                     className="flex items-center space-x-2 px-4 py-2 rounded-md h-10 bg-gray-200 transition-all transform active:scale-90 hover:bg-blue-200 active:bg-blue-500"
-                    /* 
-                  className="flex flex-row items-center space-x-2 px-4 py-2 text-lg font-medium hover:bg-blue-300" */
                   >
                     {icons[shape]?.empty}
                     <span>{referenceData.references.shapes[shape as Shapes]}</span>
                   </button>
                 ))}
               </div>
-              <div className="flex justify-center mt-1 h-16">
+              <div className="flex justify-center mt-4">
                 <div className="flex space-x-2">
                   {Object.keys(referenceData.references.fill).map((fillKey) => (
                     <button

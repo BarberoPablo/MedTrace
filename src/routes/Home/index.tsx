@@ -1,9 +1,11 @@
-import { ChevronDownIcon, DownloadIcon, PencilIcon, RedoIcon, TrashIcon, TypeIcon, UndoIcon, ZoomOutIcon, Palette } from "lucide-react";
-import { useState, useRef, useEffect, useCallback } from "react";
-import { bodyParts } from "../../utils";
 import { FabricJSCanvas, useFabricJSEditor } from "fabricjs-react";
+import { ChevronDownIcon, DownloadIcon, PencilIcon, RedoIcon, TrashIcon, TypeIcon, UndoIcon, ZoomOutIcon } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import prostata from "../../assets/prostata.png";
+import { SelectedMode } from "../../types";
+import { bodyParts } from "../../utils";
 import ImageReferences from "./components/ImageReferences";
+import SelectedModeMenu from "./components/SelectedModeMenu";
 
 const initialColor = "#000";
 
@@ -21,7 +23,7 @@ export default function MedicalImageEditor() {
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
   const [isCanvasReady, setIsCanvasReady] = useState<boolean>(false);
-  const [selectedMode, setSelectedMode] = useState<string>("select");
+  const [selectedMode, setSelectedMode] = useState<SelectedMode>("select");
   const [activeShape, setActiveShape] = useState<fabric.Object | null>(null);
   console.log(activeShape);
   useEffect(() => {
@@ -417,37 +419,17 @@ export default function MedicalImageEditor() {
                 </button>
               </div>
 
-              {selectedMode === "stroke" && (
-                <div className="flex items-center space-x-2 px-2">
-                  <button title="Cambiar color" onClick={handleStrokeColorButtonClick} className="p-2 hover:bg-gray-100 rounded">
-                    <Palette className="h-5 w-5 text-gray-600" />
-                  </button>
-                  <input
-                    ref={strokeColorInputRef}
-                    type="color"
-                    value={color.stroke}
-                    onChange={(event) => handleChangeColor(event, "stroke")}
-                    style={{
-                      position: "absolute",
-                      width: 0,
-                      height: 0,
-                    }}
-                  />
-                  <div className="flex flex-col">
-                    <span>Grosor del trazo: {strokeWidth}</span>
-                    <input
-                      type="range"
-                      value={strokeWidth}
-                      min={1}
-                      max={50}
-                      style={{
-                        accentColor: "grey",
-                      }}
-                      onChange={handleStrokeWidth}
-                    />
-                  </div>
-                </div>
-              )}
+              <SelectedModeMenu
+                props={{
+                  type: selectedMode,
+                  handleStrokeColorButtonClick: handleStrokeColorButtonClick,
+                  strokeInputRef: strokeColorInputRef,
+                  strokeInputColor: color.stroke,
+                  handleChangeColor: handleChangeColor /* llamar con (event, "stroke") */,
+                  strokeWidth: strokeWidth,
+                  handleStrokeWidth: handleStrokeWidth,
+                }}
+              />
             </div>
             <div className="flex flex-row gap-10">
               <FabricJSCanvas className="sample-canvas border mx-4 my-2" onReady={onReady} />
