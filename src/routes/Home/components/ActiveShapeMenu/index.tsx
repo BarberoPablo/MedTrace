@@ -20,43 +20,26 @@ export default function ActiveShapeMenu({
     <>
       {props.activeShape && props.activeShape.type && (
         <div /* sx={{ position: "sticky", width: "100%", top: 0, zIndex: 1 }} */>
-          <div>
-            <div className="flex items-center px-2">
-              <div>
-                <span>Opacidad: {(props.activeShape?.opacity ?? 1) * 100}%</span>
-                <input
-                  type="range"
-                  value={props.activeShape?.opacity}
-                  step={0.1}
-                  min={0}
-                  max={1}
-                  style={{
-                    accentColor: "gray",
-                  }}
-                  onChange={(event) => props.handleUpdateShape({ opacity: Number(event.target.value) })}
-                />
-              </div>
-
+          <div className="flex">
+            <div className="flex flex-col px-2 ">
               <span>Borde</span>
 
-              <div /* sx={{ flexDirection: "row", gap: 2, alignItems: "center" }} */>
-                <button title="Cambiar color del borde" onClick={props.handleStrokeColorButtonClick} style={{ backgroundColor: props.strokeInputColor }}>
+              <div className="flex gap-1">
+                <button onClick={props.handleStrokeColorButtonClick}>
                   <Palette className="h-5 w-5 text-gray-600" />
                 </button>
                 <input
                   ref={props.strokeColorInputRef}
                   type="color"
-                  value={props.strokeInputColor} //{color.stroke}
+                  value={props.strokeInputColor}
                   onChange={(event) => props.handleChangeColor(event, "stroke")}
                   style={{
-                    position: "absolute",
                     width: 0,
                     height: 0,
                     opacity: 0,
-                    left: 100,
                   }}
                 />
-                <div>
+                <div className="flex flex-col">
                   <span>Grosor: {props.activeShape?.strokeWidth ?? 1}</span>
                   <input
                     type="range"
@@ -70,10 +53,13 @@ export default function ActiveShapeMenu({
                   />
                 </div>
               </div>
+            </div>
 
+            <div className="flex flex-col px-2 border-r border-l">
               <span>Interior</span>
-              <div /* sx={{ flexDirection: "row", gap: 3 }} */>
-                <button title="Cambiar color del interior" onClick={props.handleFillColorButtonClick} style={{ backgroundColor: props.fillInputColor }}>
+
+              <div className="flex gap-1 mt-1.5">
+                <button onClick={props.handleFillColorButtonClick}>
                   <Palette className="h-5 w-5 text-gray-600" />
                 </button>
                 <input
@@ -89,40 +75,44 @@ export default function ActiveShapeMenu({
                     left: 100,
                   }}
                 />
-                <div /* sx={{ flexDirection: "row", gap: 1, justifyContent: "center" }} */>
-                  <button
-                    /* style={{ backgroundColor: "white", border: `1px solid ${theme.palette.lightDark}` }} */
-                    onClick={() => props.handleUpdateShape({ fill: "transparent" })}
-                  >
-                    {icons[props.activeShape.type]?.empty}
-                  </button>
-                  <button
-                    /* style={{ backgroundColor: "white", border: `1px solid ${theme.palette.lightDark}` }} */
-                    onClick={() => props.handleUpdateShape({ fill: props.fillInputColor })}
-                  >
-                    {icons[props.activeShape.type]?.full}
-                  </button>
+                <button onClick={() => props.handleUpdateShape({ fill: "transparent" })}>{icons[props.activeShape.type]?.empty}</button>
+                <button onClick={() => props.handleUpdateShape({ fill: props.fillInputColor })}>{icons[props.activeShape.type]?.full}</button>
+              </div>
+            </div>
+
+            {props.activeShape.type === "text" && (
+              <div className="flex flex-col px-2 border-r">
+                <span>Texto</span>
+                <div className="flex flex-col">
+                  <span>Tamaño: {(props.activeShape as fabric.Text).fontSize ?? 1}</span>
+                  <input
+                    type="range"
+                    value={(props.activeShape as fabric.Text).fontSize}
+                    min={1}
+                    max={100}
+                    style={{
+                      accentColor: "gray",
+                    }}
+                    onChange={(event) => props.handleUpdateShape({ fontSize: Number(event.target.value) })}
+                  />
                 </div>
               </div>
+            )}
 
-              {props.activeShape.type === "text" && (
-                <>
-                  <span>TEXTO</span>
-                  <div>
-                    <span>Tamaño: {(props.activeShape as fabric.Text).fontSize ?? 1}</span>
-                    <input
-                      type="range"
-                      value={(props.activeShape as fabric.Text).fontSize}
-                      min={1}
-                      max={100}
-                      style={{
-                        accentColor: "gray",
-                      }}
-                      onChange={(event) => props.handleUpdateShape({ fontSize: Number(event.target.value) })}
-                    />
-                  </div>
-                </>
-              )}
+            <div className="flex flex-col px-2">
+              <span>Opacidad</span>
+              <span>{(props.activeShape?.opacity ?? 1) * 100}%</span>
+              <input
+                type="range"
+                value={props.activeShape?.opacity}
+                step={0.1}
+                min={0}
+                max={1}
+                style={{
+                  accentColor: "gray",
+                }}
+                onChange={(event) => props.handleUpdateShape({ opacity: Number(event.target.value) })}
+              />
             </div>
           </div>
         </div>

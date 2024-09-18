@@ -8,7 +8,7 @@ import ImageReferences from "./components/ImageReferences";
 import SelectedModeMenu from "./components/SelectedModeMenu";
 import ActiveShapeMenu from "./components/ActiveShapeMenu";
 
-const initialColor = "#000";
+const initialColor = "#000000";
 
 export default function MedicalImageEditor() {
   const [openAccordions, setOpenAccordions] = useState<string[]>([]);
@@ -17,7 +17,7 @@ export default function MedicalImageEditor() {
   const fillColorInputRef = useRef<HTMLInputElement>(null);
   const [color, setColor] = useState({
     stroke: initialColor,
-    fill: "black",
+    fill: "#000000",
   });
   const [strokeWidth, setStrokeWidth] = useState(1);
   const [lastCoords, setLastCoords] = useState({ x: 200, y: 200 });
@@ -99,6 +99,7 @@ export default function MedicalImageEditor() {
   };
 
   const handleAddRectangle = (fill?: boolean, angle?: number) => {
+    setSelectedMode("");
     if (editor) {
       editor.addRectangle();
       editor.canvas.isDrawingMode = false;
@@ -124,6 +125,7 @@ export default function MedicalImageEditor() {
   };
 
   const handleAddCircle = (fill?: boolean) => {
+    setSelectedMode("");
     if (editor) {
       editor.addCircle();
       editor.canvas.isDrawingMode = false;
@@ -391,46 +393,64 @@ export default function MedicalImageEditor() {
           <div className="bg-white w-full h-full rounded-lg shadow-inner flex flex-col gap-2">
             <div className="flex flex-row border-b p-4 h-20">
               <div className="border-r flex items-center space-x-2">
-                <button onClick={handleUndo} className="p-2 hover:bg-gray-100 rounded">
-                  <UndoIcon className="h-5 w-5 text-gray-600" />
+                <button
+                  disabled={historyIndex < 1}
+                  onClick={handleUndo}
+                  className="p-2 hover:bg-gray-100 rounded transition-all transform active:scale-90 active:bg-blue-400"
+                >
+                  <UndoIcon className={`h-5 w-5 ${historyIndex < 1 ? "text-gray-300" : "text-gray-600"}`} />
                 </button>
 
-                <button onClick={handleRedo} className="p-2 hover:bg-gray-100 rounded">
-                  <RedoIcon className="h-5 w-5 text-gray-600" />
+                <button
+                  disabled={historyIndex >= history.length - 1}
+                  onClick={handleRedo}
+                  className="p-2 hover:bg-gray-100 rounded transition-all transform active:scale-90 active:bg-blue-400"
+                >
+                  <RedoIcon className={`h-5 w-5 ${historyIndex >= history.length - 1 ? "text-gray-300" : "text-gray-600"}`} />
                 </button>
 
-                <button onClick={toggleDraw} className="p-2 hover:bg-gray-100 rounded">
-                  <PencilIcon className="h-5 w-5 text-gray-600" />
+                <button
+                  onClick={toggleDraw}
+                  className={`p-2 hover:bg-gray-100 rounded ${
+                    selectedMode === "stroke" ? "bg-gray-200" : "transparent"
+                  } transition-all transform active:scale-90 active:bg-blue-400`}
+                >
+                  <PencilIcon className={`h-5 w-5 text-gray-600`} />
                 </button>
 
-                <button onClick={handleZoomOut} className="p-2 hover:bg-gray-100 rounded">
+                <button onClick={handleZoomOut} className="p-2 hover:bg-gray-100 rounded transition-all transform active:scale-90 active:bg-blue-400">
                   <ZoomOutIcon className="h-5 w-5 text-gray-600" />
                 </button>
 
-                <button onClick={handleDeleteSelected} className="p-2 hover:bg-gray-100 rounded">
+                <button
+                  onClick={handleDeleteSelected}
+                  className="p-2 hover:bg-gray-100 rounded transition-all transform active:scale-90 active:bg-blue-400"
+                >
                   <TrashIcon className="h-5 w-5 text-gray-600" />
                 </button>
 
-                <button onClick={handleAddText} className="p-2 hover:bg-gray-300 rounded">
+                <button onClick={handleAddText} className="p-2 hover:bg-gray-100 rounded transition-all transform active:scale-90 active:bg-blue-400">
                   <TypeIcon className="h-5 w-5 text-gray-600" />
                 </button>
 
-                <button onClick={handleExportPNG} className="p-2 hover:bg-gray-100 rounded">
+                <button onClick={handleExportPNG} className="p-2 hover:bg-gray-100 rounded transition-all transform active:scale-90 active:bg-blue-400">
                   <DownloadIcon className="h-5 w-5 text-gray-600" />
                 </button>
               </div>
 
-              <SelectedModeMenu
-                props={{
-                  type: selectedMode,
-                  handleStrokeColorButtonClick: handleStrokeColorButtonClick,
-                  strokeInputRef: strokeColorInputRef,
-                  strokeInputColor: color.stroke,
-                  handleChangeColor: handleChangeColor,
-                  strokeWidth: strokeWidth,
-                  handleStrokeWidth: handleStrokeWidth,
-                }}
-              />
+              {selectedMode === "stroke" && (
+                <SelectedModeMenu
+                  props={{
+                    type: selectedMode,
+                    handleStrokeColorButtonClick: handleStrokeColorButtonClick,
+                    strokeInputRef: strokeColorInputRef,
+                    strokeInputColor: color.stroke,
+                    handleChangeColor: handleChangeColor,
+                    strokeWidth: strokeWidth,
+                    handleStrokeWidth: handleStrokeWidth,
+                  }}
+                />
+              )}
               <ActiveShapeMenu
                 props={{
                   activeShape: activeShape,

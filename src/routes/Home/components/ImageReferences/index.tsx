@@ -14,7 +14,7 @@ export default function ImageReferences({
 }) {
   const [referenceData] = React.useState<ReferenceData | undefined>(references[bodyPart]);
   const [fill, setFill] = React.useState<string>("full");
-  const [selectedColor, setSelectedColor] = React.useState<string>("black");
+  const [selectedColor, setSelectedColor] = React.useState<string>("#000000");
 
   const handleChangeFillType = (value: string) => {
     setFill(value);
