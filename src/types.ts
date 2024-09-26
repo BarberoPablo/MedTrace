@@ -11,4 +11,9 @@ export type ReferenceData = {
 
 export type BodyPart = "prostata" | "oreja" | "boca" | "costillas" | "pulmones" | "rodilla" | "pie";
 
+export type BodypartOption = {
+  name: string;
+  image: string;
+};
+
 export type SelectedMode = "select" | "stroke" | "";

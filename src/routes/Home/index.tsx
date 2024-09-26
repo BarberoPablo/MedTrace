@@ -20,7 +20,7 @@ export default function MedicalImageEditor() {
     fill: "#000000",
   });
   const [strokeWidth, setStrokeWidth] = useState(1);
-  const [lastCoords, setLastCoords] = useState({ x: 200, y: 200 });
+  const [lastCoords, setLastCoords] = useState({ x: 100, y: 100 });
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
   const [isCanvasReady, setIsCanvasReady] = useState<boolean>(false);
@@ -261,6 +261,22 @@ export default function MedicalImageEditor() {
     }
   };
 
+  const setImageInCanvas = (image: string) => {
+    if (editor?.canvas) {
+      const img = new Image();
+      img.src = image;
+      img.onload = function () {
+        editor.canvas.setWidth(img.width);
+        editor.canvas.setHeight(img.height);
+        editor.canvas.setBackgroundImage(image, editor.canvas.renderAll.bind(editor.canvas));
+        editor.canvas.freeDrawingBrush.color = initialColor;
+        setIsCanvasReady(true);
+        editor?.canvas.renderAll();
+        saveHistory();
+      };
+    }
+  };
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.ctrlKey && event.key === "z") {
@@ -377,8 +393,15 @@ export default function MedicalImageEditor() {
                   {openAccordions.includes(section.title) && (
                     <div className="bg-white">
                       {section.options.map((option) => (
-                        <button key={option} className="block w-full text-left px-4 py-2 hover:bg-gray-100">
-                          {option}
+                        <button
+                          key={option.name}
+                          disabled={option.image === ""}
+                          className={`block w-full text-left px-4 py-2 ${option.image === "" && "bg-gray-200"} border-b border-white ${
+                            option.image !== "" && "hover:bg-gray-200"
+                          }`}
+                          onClick={() => setImageInCanvas(option.image)}
+                        >
+                          {option.name}
                         </button>
                       ))}
                     </div>

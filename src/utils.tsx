@@ -1,6 +1,10 @@
-import { Circle, Square, X, PaintBucket } from "lucide-react";
-import { BodyPart, ReferenceData } from "./types";
+import { Circle, PaintBucket, Square, X } from "lucide-react";
+import glandulaTiroides from "./assets/glandulaTiroides.png";
+import mamas from "./assets/mamas.png";
+import niidea from "./assets/niidea.png";
 import prostata from "./assets/prostata.png";
+import pulmones from "./assets/pulmones.png";
+import { BodyPart, BodypartOption, ReferenceData } from "./types";
 
 export const icons: { [key: string]: { full: JSX.Element; empty: JSX.Element } } = {
   rect: {
@@ -65,8 +69,27 @@ export const references: { [key in BodyPart]?: ReferenceData } = {
   },
 };
 
-export const bodyParts = [
-  { title: "Cabeza", options: ["Oreja", "Boca"] },
-  { title: "Tórax", options: ["Costillas", "Pulmones"] },
-  { title: "Piernas", options: ["Rodilla", "Pie"] },
+/* To avoid cors I will download the images to the project, otherwise ExportToPNG won't work */
+export const bodyParts: { title: string; options: BodypartOption[] }[] = [
+  {
+    title: "Cuello",
+    options: [
+      { name: "Glandula Tiroides", image: glandulaTiroides },
+      { name: "Cuello ?", image: niidea },
+    ],
+  },
+  {
+    title: "Tórax",
+    options: [
+      { name: "Mamas", image: mamas },
+      { name: "Pulmones", image: pulmones },
+    ],
+  },
+  {
+    title: "Piernas",
+    options: [
+      { name: "Rodilla", image: "" },
+      { name: "Pie", image: "" },
+    ],
+  },
 ];

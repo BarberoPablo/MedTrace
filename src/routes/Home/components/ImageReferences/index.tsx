@@ -31,17 +31,18 @@ export default function ImageReferences({
 
   return (
     <div className="flex flex-col items-center">
-      <span className="text-lg font-medium">Referencias Técnicas</span>
+      <h2 className="text-lg font-medium">Referencias Técnicas</h2>
       <div className="bg-white rounded-lg">
         {referenceData && (
           <div className="flex flex-row">
             <div className="flex flex-col pr-4 border-r">
-              <div className="flex flex-col space-y-2">
+              <div className="flex flex-col items-center p-4 space-y-2 border-2 border-gray-200">
+                <h3 className="text-lg font-medium">Agregar al dibujo</h3>
                 {Object.keys(referenceData.references.shapes).map((shape) => (
                   <button
                     key={shape}
                     onClick={() => (shape === "rhombus" ? handleData[shape as Shapes](fill === "full", 45) : handleData[shape as Shapes](fill === "full"))}
-                    className="flex items-center space-x-2 px-4 py-2 rounded-md h-10 bg-gray-200 transition-all transform active:scale-90 hover:bg-blue-200 active:bg-blue-500"
+                    className="flex items-center space-x-2 px-4 py-2 w-full rounded-md h-10 bg-gray-200 transition-all transform active:scale-90 hover:bg-blue-200 active:bg-blue-500"
                   >
                     {icons[shape]?.empty}
                     <span>{referenceData.references.shapes[shape as Shapes]}</span>
@@ -65,13 +66,14 @@ export default function ImageReferences({
             </div>
 
             <div className="flex flex-col pl-4">
-              <div className="flex flex-col space-y-2">
+              <div className="flex flex-col items-center p-4 space-y-2 border-2 border-gray-200">
+                <h3 className="text-lg font-medium">Opciones</h3>
                 {Object.keys(referenceData.references.colors).map((colorKey) => (
                   <button
                     key={colorKey}
                     value={colorKey}
                     onClick={() => handleChangeColor(colorKey)}
-                    className={`flex items-center px-4 py-2 rounded-md text-sm font-medium space-x-2 ${
+                    className={`flex items-center w-full px-4 py-2 rounded-md text-sm font-medium space-x-2 ${
                       selectedColor === colorKey ? "bg-blue-300" : "bg-gray-200"
                     } `}
                   >
